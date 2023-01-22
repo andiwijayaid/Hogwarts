@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="page_title_margin_start">16dp</dimen>
+    <dimen name="page_title_margin_top">16dp</dimen>
+    <dimen name="page_title_text_size">32dp</dimen>
+    <dimen name="houses_root_padding_bottom">36dp</dimen>
+    <dimen name="houses_button_elevation">4dp</dimen>
+    <dimen name="houses_button_padding">24dp</dimen>
+    <dimen name="houses_gryffindor_button_start">14dp</dimen>
+    <dimen name="houses_gryffindor_button_top">16dp</dimen>
+    <dimen name="houses_gryffindor_button_end">6dp</dimen>
+    <dimen name="houses_gryffindor_button_bottom">6dp</dimen>
+    <dimen name="houses_slytherin_button_start">6dp</dimen>
+    <dimen name="houses_slytherin_button_top">16dp</dimen>
+    <dimen name="houses_slytherin_button_end">14dp</dimen>
+    <dimen name="houses_slytherin_button_bottom">6dp</dimen>
+    <dimen name="houses_ravenclaw_button_start">14dp</dimen>
+    <dimen name="houses_ravenclaw_button_top">6dp</dimen>
+    <dimen name="houses_ravenclaw_button_end">6dp</dimen>
+    <dimen name="houses_ravenclaw_button_bottom">16dp</dimen>
+    <dimen name="houses_hufflepuff_button_start">6dp</dimen>
+    <dimen name="houses_hufflepuff_button_top">6dp</dimen>
+    <dimen name="houses_hufflepuff_button_end">14dp</dimen>
+    <dimen name="houses_hufflepuff_button_bottom">16dp</dimen>
+    <dimen name="houses_search_button_padding">52dp</dimen>
+</resources>

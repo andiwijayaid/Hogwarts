@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape
+            android:shape="oval"
+            android:tint="?android:colorBackground" />
+    </item>
+
+    <item
+        android:bottom="24dp"
+        android:end="24dp"
+        android:start="24dp"
+        android:top="24dp">
+        <shape
+            android:shape="oval"
+            android:tint="#7522B3" />
+    </item>
+
+</layer-list>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/houses_root_padding_bottom">
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/PageTitle"
+        android:text="@string/houses"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/bt_gryffindor"
+        style="@style/HouseButton"
+        android:layout_marginStart="@dimen/houses_gryffindor_button_start"
+        android:layout_marginTop="@dimen/houses_gryffindor_button_top"
+        android:layout_marginEnd="@dimen/houses_gryffindor_button_end"
+        android:layout_marginBottom="@dimen/houses_gryffindor_button_bottom"
+        android:background="@drawable/bg_house"
+        android:backgroundTint="@color/gryffindor"
+        android:src="@drawable/gryffindor"
+        app:layout_constraintBottom_toTopOf="@id/bt_ravenclaw"
+        app:layout_constraintEnd_toStartOf="@id/bt_slytherin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/bt_slytherin"
+        style="@style/HouseButton"
+        android:layout_marginStart="@dimen/houses_slytherin_button_start"
+        android:layout_marginTop="@dimen/houses_slytherin_button_top"
+        android:layout_marginEnd="@dimen/houses_slytherin_button_end"
+        android:layout_marginBottom="@dimen/houses_slytherin_button_bottom"
+        android:background="@drawable/bg_house"
+        android:backgroundTint="@color/slytherin"
+        android:src="@drawable/slytherin"
+        app:layout_constraintBottom_toTopOf="@id/bt_hufflepuff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/bt_gryffindor"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/bt_ravenclaw"
+        style="@style/HouseButton"
+        android:layout_marginStart="@dimen/houses_ravenclaw_button_start"
+        android:layout_marginTop="@dimen/houses_ravenclaw_button_top"
+        android:layout_marginEnd="@dimen/houses_ravenclaw_button_end"
+        android:layout_marginBottom="@dimen/houses_ravenclaw_button_bottom"
+        android:background="@drawable/bg_house"
+        android:backgroundTint="@color/ravenclaw"
+        android:src="@drawable/ravenclaw"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bt_hufflepuff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bt_gryffindor" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/bt_hufflepuff"
+        style="@style/HouseButton"
+        android:layout_marginStart="@dimen/houses_hufflepuff_button_start"
+        android:layout_marginTop="@dimen/houses_hufflepuff_button_top"
+        android:layout_marginEnd="@dimen/houses_hufflepuff_button_end"
+        android:layout_marginBottom="@dimen/houses_hufflepuff_button_bottom"
+        android:background="@drawable/bg_house"
+        android:backgroundTint="@color/hufflepuff"
+        android:src="@drawable/hufflepuff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/bt_ravenclaw"
+        app:layout_constraintTop_toBottomOf="@id/bt_slytherin" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/bt_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_search_circle"
+        android:elevation="@dimen/houses_button_elevation"
+        android:padding="@dimen/houses_search_button_padding"
+        android:src="@drawable/ic_search_eye"
+        app:layout_constraintBottom_toBottomOf="@id/bt_ravenclaw"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bt_gryffindor" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
