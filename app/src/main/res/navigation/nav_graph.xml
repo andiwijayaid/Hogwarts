@@ -18,6 +18,24 @@
     <fragment
         android:id="@+id/fragment_houses"
         android:name="id.andiwijaya.hogwarts.presentation.fragment.HousesFragment"
-        tools:layout="@layout/fragment_houses" />
+        tools:layout="@layout/fragment_houses">
+
+        <action
+            android:id="@+id/action_to_character_list"
+            app:destination="@id/fragment_character_list" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_character_list"
+        android:name="id.andiwijaya.hogwarts.presentation.fragment.CharacterListFragment"
+        tools:layout="@layout/fragment_character_list">
+
+        <argument
+            android:name="houses"
+            android:defaultValue=" "
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>
