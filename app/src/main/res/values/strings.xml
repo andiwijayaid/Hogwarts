@@ -3,4 +3,6 @@
     <string name="houses">Houses</string>
     <string name="name">Name</string>
     <string name="species">Species</string>
+    <string name="reload">Reload</string>
+    <string name="general_error">Something went wrong, tap to try again</string>
 </resources>

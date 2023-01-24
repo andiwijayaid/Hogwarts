@@ -1,48 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/item_character_card_corner_radius">
+    android:clipToPadding="false"
+    android:padding="@dimen/item_character_padding">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_character"
+        android:layout_width="@dimen/item_character_image_width"
+        android:layout_height="@dimen/item_character_image_height"
+        app:cardCornerRadius="@dimen/item_character_corner_radius"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_character"
-            android:layout_width="@dimen/item_character_image_width"
-            android:layout_height="@dimen/item_character_image_height"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="@dimen/zero_dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_character_name_margin_start"
-            android:layout_marginTop="@dimen/item_character_name_margin_top"
-            android:layout_marginEnd="@dimen/item_character_name_margin_end"
-            android:text="@string/name"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/item_character_name_text_size"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_character"
-            app:layout_constraintTop_toTopOf="@id/iv_character" />
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/tv_species"
-            android:layout_width="@dimen/zero_dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_character_species_margin_start"
-            android:layout_marginEnd="@dimen/item_character_species_margin_end"
-            android:text="@string/species"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_character"
-            app:layout_constraintTop_toBottomOf="@id/tv_name" />
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_character_name_margin_start"
+        android:layout_marginTop="@dimen/item_character_name_margin_top"
+        android:layout_marginEnd="@dimen/item_character_name_margin_end"
+        android:maxLines="2"
+        android:text="@string/name"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/item_character_name_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cv_character"
+        app:layout_constraintTop_toTopOf="@id/cv_character" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_species"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_character_species_margin_start"
+        android:layout_marginEnd="@dimen/item_character_species_margin_end"
+        android:text="@string/species"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cv_character"
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

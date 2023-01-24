@@ -10,9 +10,9 @@ interface PotterDbApi {
 
     @GET("characters")
     suspend fun getCharacters(
-        @Query("filter[house_cont_any]") houseName: String,
+        @Query("filter[house_cont_any]") house: String,
         @Query("page[number]") pageNumber: Int,
-        @Query("page[size]") numberPerPage: Int? = DEFAULT_PAGE_SIZE
+        @Query("page[size]") size: Int? = DEFAULT_PAGE_SIZE
     ): Response<GetCharactersResponse>
 
 }

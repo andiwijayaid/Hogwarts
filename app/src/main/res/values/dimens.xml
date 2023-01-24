@@ -24,8 +24,10 @@
     <dimen name="houses_hufflepuff_button_end">14dp</dimen>
     <dimen name="houses_hufflepuff_button_bottom">16dp</dimen>
     <dimen name="houses_search_button_padding">52dp</dimen>
+    <dimen name="item_character_padding">4dp</dimen>
     <dimen name="item_character_image_width">100dp</dimen>
     <dimen name="item_character_image_height">100dp</dimen>
+    <dimen name="item_character_corner_radius">50dp</dimen>
     <dimen name="item_character_name_margin_start">16dp</dimen>
     <dimen name="item_character_name_margin_top">16dp</dimen>
     <dimen name="item_character_name_margin_end">8dp</dimen>
@@ -33,4 +35,6 @@
     <dimen name="item_character_species_margin_start">16dp</dimen>
     <dimen name="item_character_species_margin_end">8dp</dimen>
     <dimen name="item_character_card_corner_radius">8dp</dimen>
+    <dimen name="item_character_load_footer_progress_bar_elevation">2dp</dimen>
+    <dimen name="character_list_title_padding_bottom">4dp</dimen>
 </resources>
