@@ -22,5 +22,7 @@ object Constants {
     const val INITIAL_PAGE_INDEX = 1
     const val ZERO = 0
     const val ONE = 1
+    const val EMPTY_STRING = ""
+    const val HYPEN = "-"
 
 }

@@ -51,4 +51,6 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
         }.build()
     )
 
+    protected fun back() = findNavController().navigateUp()
+
 }

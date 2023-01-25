@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
+import id.andiwijaya.hogwarts.core.Constants.EMPTY_STRING
 import id.andiwijaya.hogwarts.core.Constants.House.GRYFFINDOR
 import id.andiwijaya.hogwarts.core.Constants.House.HUFFLEPUFF
 import id.andiwijaya.hogwarts.core.Constants.House.RAVENCLAW
@@ -26,6 +27,7 @@ class HousesFragment : BaseFragment<FragmentHousesBinding>() {
         btSlytherin.setOnClickListener { navigateToCharacterList(SLYTHERIN) }
         btRavenclaw.setOnClickListener { navigateToCharacterList(RAVENCLAW) }
         btHufflepuff.setOnClickListener { navigateToCharacterList(HUFFLEPUFF) }
+        btSearch.setOnClickListener { navigateToCharacterList(EMPTY_STRING) }
     }
 
     private fun navigateToCharacterList(house: String) {

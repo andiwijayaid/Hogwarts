@@ -36,6 +36,21 @@
             android:defaultValue=" "
             app:argType="string" />
 
+        <action
+            android:id="@+id/action_to_character_detail"
+            app:destination="@id/fragment_character_detail" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_character_detail"
+        android:name="id.andiwijaya.hogwarts.presentation.fragment.CharacterDetailFragment"
+        tools:layout="@layout/fragment_character_detail">
+
+        <argument
+            android:name="character"
+            app:argType="id.andiwijaya.hogwarts.domain.model.Character" />
+
     </fragment>
 
 </navigation>

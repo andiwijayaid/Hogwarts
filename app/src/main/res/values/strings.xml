@@ -5,4 +5,11 @@
     <string name="species">Species</string>
     <string name="reload">Reload</string>
     <string name="general_error">Something went wrong, tap to try again</string>
+    <string name="born">Born</string>
+    <string name="nationality">Nationality</string>
+    <string name="gender">Gender</string>
+    <string name="house">House</string>
+    <string name="died">Died</string>
+    <string name="back">back</string>
+    <string name="search_hint">Search…</string>
 </resources>

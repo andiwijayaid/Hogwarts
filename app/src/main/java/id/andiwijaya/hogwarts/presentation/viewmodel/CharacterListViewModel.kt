@@ -20,7 +20,7 @@ class CharacterListViewModel @Inject constructor(
     val house = MutableLiveData<String>()
 
     private val _characters = MutableLiveData<PagingData<Character>>()
-    val character: LiveData<PagingData<Character>> = _characters
+    val characters: LiveData<PagingData<Character>> = _characters
 
     fun processArgs(args: CharacterListFragmentArgs) {
         house.value = args.houses
@@ -29,5 +29,4 @@ class CharacterListViewModel @Inject constructor(
     fun getCharacters(house: String) = collectFlow(
         getCharactersUseCase(house).cachedIn(viewModelScope), _characters
     )
-
 }

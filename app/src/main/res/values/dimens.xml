@@ -2,6 +2,7 @@
 <resources>
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="page_title_margin_start">16dp</dimen>
+    <dimen name="page_title_margin_end">16dp</dimen>
     <dimen name="page_title_margin_top">16dp</dimen>
     <dimen name="page_title_text_size">32dp</dimen>
     <dimen name="houses_root_padding_bottom">36dp</dimen>
@@ -37,4 +38,20 @@
     <dimen name="item_character_card_corner_radius">8dp</dimen>
     <dimen name="item_character_load_footer_progress_bar_elevation">2dp</dimen>
     <dimen name="character_list_title_padding_bottom">4dp</dimen>
+    <dimen name="character_list_back_button_margin_start">12dp</dimen>
+    <dimen name="character_list_back_button_padding">12dp</dimen>
+    <dimen name="character_list_recycler_view_margin_horizontal">16dp</dimen>
+    <dimen name="character_list_reload_button_padding">16dp</dimen>
+    <dimen name="character_detail_image_background">180dp</dimen>
+    <dimen name="character_detail_back_button_margin">12dp</dimen>
+    <dimen name="character_detail_back_button_padding">4dp</dimen>
+    <dimen name="character_detail_image_width">150dp</dimen>
+    <dimen name="character_detail_card_image_height">150dp</dimen>
+    <dimen name="character_detail_card_image_corner_radius">75dp</dimen>
+    <dimen name="character_detail_card_image_elevation">50dp</dimen>
+    <dimen name="character_detail_name_margin_top">12dp</dimen>
+    <dimen name="character_detail_name_text_size">24sp</dimen>
+    <dimen name="character_detail_content_margin_horizontal">16dp</dimen>
+    <dimen name="character_detail_content_margin_top">12dp</dimen>
+    <dimen name="component_hogwarts_title_value_value_text_size">18sp</dimen>
 </resources>

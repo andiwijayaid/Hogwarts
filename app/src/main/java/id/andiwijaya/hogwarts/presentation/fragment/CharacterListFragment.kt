@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -24,7 +25,9 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
     private val args: CharacterListFragmentArgs by navArgs()
 
     private val adapter by lazy {
-        CharacterAdapter {}
+        CharacterAdapter {
+            goTo(CharacterListFragmentDirections.actionToCharacterDetail(it))
+        }
     }
 
     override fun initBinding(
@@ -36,6 +39,7 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         processArgs(args)
+        setupHeader()
         setupObserver()
         binding.rvCharacter.adapter = adapter.withLoadStateFooter(
             footer = CharacterLoadStateAdapter { getCharacters(house.value.orEmpty()) }
@@ -47,6 +51,14 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
         }
 
         binding.ibReload.setOnClickListener { getCharacters(house.value.orEmpty()) }
+        binding.ibBackButton.setOnClickListener { back() }
+    }
+
+    private fun setupHeader() = with(binding) {
+        viewModel.house.value.isNullOrBlank().apply {
+            etSearch.isVisible = this
+            tvTitle.isInvisible = this
+        }
     }
 
     private fun setupObserver() = with(viewModel) {
@@ -54,7 +66,7 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
             binding.tvTitle.text = it
             getCharacters(it)
         }
-        character.observe(viewLifecycleOwner) {
+        characters.observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)
         }
     }

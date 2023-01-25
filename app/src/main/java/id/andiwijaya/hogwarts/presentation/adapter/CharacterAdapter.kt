@@ -11,12 +11,12 @@ import id.andiwijaya.hogwarts.databinding.ItemCharacterBinding
 import id.andiwijaya.hogwarts.domain.model.Character
 
 class CharacterAdapter(
-    private val onItemSelected: () -> Unit
+    private val onItemSelected: (Character) -> Unit
 ) : PagingDataAdapter<Character, CharacterAdapter.ViewHolder>(CharacterDiffCallback) {
 
     class ViewHolder(
         private val binding: ItemCharacterBinding,
-        val onItemSelected: () -> Unit
+        private val onItemSelected: (Character) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(character: Character) = with(binding) {
 
@@ -26,7 +26,7 @@ class CharacterAdapter(
                 .into(ivCharacter)
             tvName.text = character.name
             tvSpecies.text = character.species
-
+            root.setOnClickListener { onItemSelected.invoke(character) }
         }
     }
 

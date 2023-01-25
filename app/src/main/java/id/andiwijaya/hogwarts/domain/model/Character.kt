@@ -1,8 +1,11 @@
 package id.andiwijaya.hogwarts.domain.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "character")
 data class Character(
     @PrimaryKey
@@ -21,4 +24,4 @@ data class Character(
     val nationality: String,
     val species: String,
     val wiki: String
-)
+) : Parcelable
