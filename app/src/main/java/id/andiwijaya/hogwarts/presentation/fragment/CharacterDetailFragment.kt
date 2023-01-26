@@ -15,7 +15,7 @@ import id.andiwijaya.hogwarts.core.Constants.House.HUFFLEPUFF
 import id.andiwijaya.hogwarts.core.Constants.House.RAVENCLAW
 import id.andiwijaya.hogwarts.core.Constants.House.SLYTHERIN
 import id.andiwijaya.hogwarts.core.base.BaseFragment
-import id.andiwijaya.hogwarts.core.util.orHypen
+import id.andiwijaya.hogwarts.core.util.orHyphen
 import id.andiwijaya.hogwarts.databinding.FragmentCharacterDetailBinding
 import id.andiwijaya.hogwarts.presentation.viewmodel.CharacterDetailViewModel
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -37,11 +37,11 @@ class CharacterDetailFragment : BaseFragment<FragmentCharacterDetailBinding>() {
         viewModel.processArgs(args)
         setupImage()
         tvName.text = viewModel.character?.name
-        htvBorn.value = viewModel.character?.born.orHypen()
-        htvDied.value = viewModel.character?.died.orHypen()
-        htvNationality.value = viewModel.character?.nationality.orHypen()
-        htvGender.value = viewModel.character?.gender.orHypen()
-        htvHouse.value = viewModel.character?.house.orHypen()
+        htvBorn.value = viewModel.character?.born.orHyphen()
+        htvDied.value = viewModel.character?.died.orHyphen()
+        htvNationality.value = viewModel.character?.nationality.orHyphen()
+        htvGender.value = viewModel.character?.gender.orHyphen()
+        htvHouse.value = viewModel.character?.house.orHyphen()
         ibBackButton.setOnClickListener { back() }
     }
 

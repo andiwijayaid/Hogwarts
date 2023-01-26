@@ -17,16 +17,25 @@ class CharacterListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase
 ) : BaseViewModel() {
 
-    val house = MutableLiveData<String>()
+    private val _keyword = MutableLiveData<String>()
+    val keyword: LiveData<String> = _keyword
+
+    var isSearch = false
+        private set
 
     private val _characters = MutableLiveData<PagingData<Character>>()
     val characters: LiveData<PagingData<Character>> = _characters
 
     fun processArgs(args: CharacterListFragmentArgs) {
-        house.value = args.houses
+        isSearch = args.isSearch
+        if (isSearch.not()) _keyword.value = args.houses
     }
 
-    fun getCharacters(house: String) = collectFlow(
-        getCharactersUseCase(house).cachedIn(viewModelScope), _characters
+    fun setKeyword(keyword: String) {
+        _keyword.value = keyword
+    }
+
+    fun getCharacters(keyword: String, isSearch: Boolean = false) = collectFlow(
+        getCharactersUseCase(keyword, isSearch).cachedIn(viewModelScope), _characters
     )
 }

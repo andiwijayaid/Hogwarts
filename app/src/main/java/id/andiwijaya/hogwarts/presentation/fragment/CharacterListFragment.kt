@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -41,30 +42,45 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
         processArgs(args)
         setupHeader()
         setupObserver()
-        binding.rvCharacter.adapter = adapter.withLoadStateFooter(
-            footer = CharacterLoadStateAdapter { getCharacters(house.value.orEmpty()) }
-        )
-        binding.rvCharacter.layoutManager = LinearLayoutManager(context)
-        adapter.addLoadStateListener {
-            binding.pbStory.isVisible = it.refresh is LoadState.Loading && adapter.itemCount == ZERO
-            binding.cgError.isVisible = it.refresh is LoadState.Error && adapter.itemCount == ZERO
-        }
-
-        binding.ibReload.setOnClickListener { getCharacters(house.value.orEmpty()) }
-        binding.ibBackButton.setOnClickListener { back() }
+        setupList()
+        setupAction()
     }
 
     private fun setupHeader() = with(binding) {
-        viewModel.house.value.isNullOrBlank().apply {
-            etSearch.isVisible = this
-            tvTitle.isInvisible = this
+        etSearch.isVisible = viewModel.isSearch
+        tvTitle.isInvisible = viewModel.isSearch
+    }
+
+    private fun setupList() = with(binding) {
+        rvCharacter.adapter = adapter.withLoadStateFooter(
+            footer = CharacterLoadStateAdapter {
+                viewModel.getCharacters(
+                    viewModel.keyword.value.orEmpty(), viewModel.isSearch
+                )
+            }
+        )
+        rvCharacter.layoutManager = LinearLayoutManager(context)
+        adapter.addLoadStateListener {
+            pbStory.isVisible = it.refresh is LoadState.Loading && adapter.itemCount == ZERO
+            cgError.isVisible = it.refresh is LoadState.Error && adapter.itemCount == ZERO
+        }
+    }
+
+    private fun setupAction() = with(binding) {
+        ibReload.setOnClickListener { viewModel.getCharacters(viewModel.keyword.value.orEmpty()) }
+        ibBackButton.setOnClickListener { back() }
+        etSearch.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                viewModel.setKeyword(v.text.toString())
+            }
+            false
         }
     }
 
     private fun setupObserver() = with(viewModel) {
-        house.observe(viewLifecycleOwner) {
+        keyword.observe(viewLifecycleOwner) {
             binding.tvTitle.text = it
-            getCharacters(it)
+            getCharacters(it, isSearch)
         }
         characters.observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)

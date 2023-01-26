@@ -27,11 +27,11 @@ class HousesFragment : BaseFragment<FragmentHousesBinding>() {
         btSlytherin.setOnClickListener { navigateToCharacterList(SLYTHERIN) }
         btRavenclaw.setOnClickListener { navigateToCharacterList(RAVENCLAW) }
         btHufflepuff.setOnClickListener { navigateToCharacterList(HUFFLEPUFF) }
-        btSearch.setOnClickListener { navigateToCharacterList(EMPTY_STRING) }
+        btSearch.setOnClickListener { navigateToCharacterList(EMPTY_STRING, true) }
     }
 
-    private fun navigateToCharacterList(house: String) {
-        goTo(HousesFragmentDirections.actionToCharacterList(house))
+    private fun navigateToCharacterList(house: String, isSearch: Boolean = false) {
+        goTo(HousesFragmentDirections.actionToCharacterList(house, isSearch))
     }
 
 }

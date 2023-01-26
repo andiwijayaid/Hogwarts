@@ -15,4 +15,11 @@ interface PotterDbApi {
         @Query("page[size]") size: Int? = DEFAULT_PAGE_SIZE
     ): Response<GetCharactersResponse>
 
+    @GET("characters")
+    suspend fun getCharactersByName(
+        @Query("filter[name_cont_any]") name: String,
+        @Query("page[number]") pageNumber: Int,
+        @Query("page[size]") size: Int? = DEFAULT_PAGE_SIZE
+    ): Response<GetCharactersResponse>
+
 }

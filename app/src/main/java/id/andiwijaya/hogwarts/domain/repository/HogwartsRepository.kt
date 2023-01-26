@@ -5,5 +5,5 @@ import id.andiwijaya.hogwarts.domain.model.Character
 import kotlinx.coroutines.flow.Flow
 
 interface HogwartsRepository {
-    fun getCharacters(house: String): Flow<PagingData<Character>>
+    fun getCharacters(keyword: String, isSearch: Boolean = false): Flow<PagingData<Character>>
 }

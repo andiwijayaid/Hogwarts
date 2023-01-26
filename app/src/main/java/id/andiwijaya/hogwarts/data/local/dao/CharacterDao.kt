@@ -13,8 +13,14 @@ interface CharacterDao {
     suspend fun insertCharacters(characters: List<Character>)
 
     @Query("SELECT * FROM character WHERE house is :houseName ORDER BY name ASC")
-    fun getCharacters(houseName: String): PagingSource<Int, Character>
+    fun getCharactersByHouse(houseName: String): PagingSource<Int, Character>
+
+    @Query("SELECT * FROM character WHERE name LIKE :keyword ORDER BY name ASC")
+    fun getCharactersByName(keyword: String): PagingSource<Int, Character>
+
+    @Query("SELECT COUNT(*) FROM character WHERE name LIKE :keyword")
+    suspend fun getNumberOfCharactersByName(keyword: String): Int
 
     @Query("SELECT COUNT(*) FROM character WHERE house is :houseName")
-    suspend fun getNumberOfCharacters(houseName: String): Int
+    suspend fun getNumberOfCharactersByHouse(houseName: String): Int
 }

@@ -18,4 +18,14 @@ class HogwartsRemoteDataSource @Inject constructor(
         return getResultWithSingleObject { api.getCharacters(house, pageNumber, size) }
     }
 
+    suspend fun getCharactersByName(
+        name: String,
+        pageNumber: Int,
+        size: Int? = null
+    ): Result<GetCharactersResponse> {
+        return getResultWithSingleObject {
+            api.getCharactersByName(name, pageNumber, size)
+        }
+    }
+
 }

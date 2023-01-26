@@ -7,9 +7,11 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import id.andiwijaya.hogwarts.core.Constants.INITIAL_PAGE_INDEX
 import id.andiwijaya.hogwarts.core.Constants.ONE
+import id.andiwijaya.hogwarts.core.Constants.PERCENT
 import id.andiwijaya.hogwarts.core.Constants.ZERO
 import id.andiwijaya.hogwarts.core.Status.ERROR
 import id.andiwijaya.hogwarts.core.util.orTrue
+import id.andiwijaya.hogwarts.core.util.wrap
 import id.andiwijaya.hogwarts.data.local.HogwartsDatabase
 import id.andiwijaya.hogwarts.data.remote.dto.response.toCharacters
 import id.andiwijaya.hogwarts.data.remote.service.HogwartsRemoteDataSource
@@ -21,7 +23,8 @@ import javax.inject.Inject
 class HogwartsRemoteMediator @Inject constructor(
     private val database: HogwartsDatabase,
     private val remoteDataSource: HogwartsRemoteDataSource,
-    private val house: String
+    private val keyword: String,
+    private val isSearch: Boolean = false
 ) : RemoteMediator<Int, Character>() {
 
     override suspend fun load(
@@ -46,13 +49,17 @@ class HogwartsRemoteMediator @Inject constructor(
             }
         }
         return try {
-            val response = remoteDataSource.getCharacters(house, page, state.config.pageSize)
+            val response = if (isSearch) {
+                remoteDataSource.getCharactersByName(keyword, page, state.config.pageSize)
+            } else remoteDataSource.getCharacters(keyword, page, state.config.pageSize)
             val endOfPaginationReached = response.data?.characters?.isEmpty().orTrue()
             database.withTransaction {
-                val isError = response.status == ERROR
-                if (isError && database.characterDao().getNumberOfCharacters(house) == ZERO) {
-                    MediatorResult.Error(Exception("Error"))
-                } else {
+                val isError = setOf(
+                    response.status == ERROR,
+                    isCharactersNotExistByHouse(keyword),
+                    isCharactersNotExistByName(keyword)
+                ).all { true }
+                if (isError) MediatorResult.Error(Exception("Error")) else {
                     val prevKey = if (page == ONE) null else page - ONE
                     val nextKey = if (endOfPaginationReached) null else page + ONE
                     val keys = response.data?.characters?.map {
@@ -68,6 +75,12 @@ class HogwartsRemoteMediator @Inject constructor(
             MediatorResult.Error(exception)
         }
     }
+
+    private suspend fun isCharactersNotExistByHouse(house: String) =
+        database.characterDao().getNumberOfCharactersByHouse(house.wrap(PERCENT)) == ZERO
+
+    private suspend fun isCharactersNotExistByName(name: String) =
+        database.characterDao().getNumberOfCharactersByName(name) == ZERO
 
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Character>): RemoteKeys? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { data ->

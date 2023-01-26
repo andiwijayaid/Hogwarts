@@ -1,5 +1,7 @@
 package id.andiwijaya.hogwarts.core.util
 
-import id.andiwijaya.hogwarts.core.Constants.HYPEN
+import id.andiwijaya.hogwarts.core.Constants.HYPHEN
 
-fun String?.orHypen() = this.takeIf { it.isNullOrBlank().not() } ?: HYPEN
+fun String?.orHyphen() = this.takeIf { it.isNullOrBlank().not() } ?: HYPHEN
+
+fun String.wrap(wrapper: String) = "$wrapper$this$wrapper"
