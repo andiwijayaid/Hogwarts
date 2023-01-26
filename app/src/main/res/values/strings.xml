@@ -12,4 +12,8 @@
     <string name="died">Died</string>
     <string name="back">back</string>
     <string name="search_hint">Search…</string>
+    <string name="no_data_found">No Data Found</string>
+    <string name="no_data_message">No data found,\nDo you want to try another magic?</string>
+    <string name="blank_keyword_message">Do you have a wish?</string>
+    <string name="loading">Loading…</string>
 </resources>

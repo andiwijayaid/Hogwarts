@@ -9,9 +9,11 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import id.andiwijaya.hogwarts.R
 import id.andiwijaya.hogwarts.core.Constants.ZERO
 import id.andiwijaya.hogwarts.core.base.BaseFragment
 import id.andiwijaya.hogwarts.databinding.FragmentCharacterListBinding
@@ -60,22 +62,47 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
             }
         )
         rvCharacter.layoutManager = LinearLayoutManager(context)
-        adapter.addLoadStateListener {
-            pbStory.isVisible = it.refresh is LoadState.Loading && adapter.itemCount == ZERO
-            cgError.isVisible = it.refresh is LoadState.Error && adapter.itemCount == ZERO
+        adapter.addLoadStateListener { validateLoadState(it) }
+    }
+
+    private fun validateLoadState(loadStates: CombinedLoadStates) = with(binding) {
+        if (loadStates.refresh is LoadState.Loading && noItem()) {
+            cgError.isVisible = false
+            cgPageState.isVisible = true
+            tvPageState.text = getString(R.string.loading)
+        } else if ((loadStates.refresh is LoadState.Error).not() && noItem()) {
+            cgError.isVisible = false
+            cgPageState.isVisible = true
+            tvPageState.text = getString(R.string.no_data_message)
+        } else if (loadStates.refresh is LoadState.Error && noItem()) {
+            cgError.isVisible = true
+            cgPageState.isVisible = false
+        } else {
+            cgError.isVisible = false
+            cgPageState.isVisible = false
         }
     }
 
     private fun setupAction() = with(binding) {
         ibReload.setOnClickListener { viewModel.getCharacters(viewModel.keyword.value.orEmpty()) }
         ibBackButton.setOnClickListener { back() }
-        etSearch.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.setKeyword(v.text.toString())
-            }
+        etSearch.setOnEditorActionListener { _, actionId, _ ->
+            validateAndPerformSearch(actionId)
+            hideKeyboard()
             false
         }
     }
+
+    private fun validateAndPerformSearch(actionId: Int) = with(binding) {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH && etSearch.text.isNotBlank()) {
+            viewModel.setKeyword(etSearch.text.toString())
+        } else if (etSearch.text.isBlank()) {
+            cgPageState.isVisible = etSearch.text.isBlank() && noItem()
+            tvPageState.text = getString(R.string.blank_keyword_message)
+        } else tvPageState.text = getString(R.string.no_data_message)
+    }
+
+    private fun noItem() = adapter.itemCount == ZERO
 
     private fun setupObserver() = with(viewModel) {
         keyword.observe(viewLifecycleOwner) {

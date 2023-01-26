@@ -1,5 +1,6 @@
 package id.andiwijaya.hogwarts.data.mediator
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -56,9 +57,10 @@ class HogwartsRemoteMediator @Inject constructor(
             database.withTransaction {
                 val isError = setOf(
                     response.status == ERROR,
-                    isCharactersNotExistByHouse(keyword),
-                    isCharactersNotExistByName(keyword)
-                ).all { true }
+                    isCharactersNotExistByName(keyword).takeIf { isSearch }
+                        ?: isCharactersNotExistByHouse(keyword)
+                ).contains(false).not()
+                Log.d("ASDCV", "${response.status == ERROR}, $isError")
                 if (isError) MediatorResult.Error(Exception("Error")) else {
                     val prevKey = if (page == ONE) null else page - ONE
                     val nextKey = if (endOfPaginationReached) null else page + ONE

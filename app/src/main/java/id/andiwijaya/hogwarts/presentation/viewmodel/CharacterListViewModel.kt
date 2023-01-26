@@ -28,7 +28,7 @@ class CharacterListViewModel @Inject constructor(
 
     fun processArgs(args: CharacterListFragmentArgs) {
         isSearch = args.isSearch
-        if (isSearch.not()) _keyword.value = args.houses
+        if (isSearch.not()) setKeyword(args.houses)
     }
 
     fun setKeyword(keyword: String) {
