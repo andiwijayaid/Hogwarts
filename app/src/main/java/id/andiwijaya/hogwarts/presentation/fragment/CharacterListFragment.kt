@@ -70,13 +70,13 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
             cgError.isVisible = false
             cgPageState.isVisible = true
             tvPageState.text = getString(R.string.loading)
-        } else if ((loadStates.refresh is LoadState.Error).not() && noItem()) {
-            cgError.isVisible = false
-            cgPageState.isVisible = true
-            tvPageState.text = getString(R.string.no_data_message)
         } else if (loadStates.refresh is LoadState.Error && noItem()) {
             cgError.isVisible = true
             cgPageState.isVisible = false
+        } else if (loadStates.append.endOfPaginationReached && noItem()) {
+            cgError.isVisible = false
+            cgPageState.isVisible = true
+            tvPageState.text = getString(R.string.no_data_message)
         } else {
             cgError.isVisible = false
             cgPageState.isVisible = false
@@ -99,7 +99,7 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
         } else if (etSearch.text.isBlank()) {
             cgPageState.isVisible = etSearch.text.isBlank() && noItem()
             tvPageState.text = getString(R.string.blank_keyword_message)
-        } else tvPageState.text = getString(R.string.no_data_message)
+        } else tvPageState.text = getString(R.string.loading)
     }
 
     private fun noItem() = adapter.itemCount == ZERO
