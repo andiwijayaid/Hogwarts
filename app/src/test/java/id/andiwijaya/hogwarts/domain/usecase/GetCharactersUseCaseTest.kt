@@ -10,6 +10,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import id.andiwijaya.hogwarts.core.Constants.EMPTY_STRING
 import id.andiwijaya.hogwarts.data.repository.HogwartsRepositoryImpl
 import id.andiwijaya.hogwarts.domain.model.Character
+import id.andiwijaya.hogwarts.domain.usecase.impl.GetCharactersUseCaseImpl
 import id.andiwijaya.hogwarts.util.CharacterPagingSource
 import id.andiwijaya.hogwarts.util.DataDummy.dummyCharacters
 import id.andiwijaya.hogwarts.util.MainDispatcherRule
@@ -31,11 +32,11 @@ class GetCharactersUseCaseTest {
 
     private val repo = mock<HogwartsRepositoryImpl>()
 
-    private lateinit var targetUseCase: GetCharactersUseCase
+    private lateinit var targetUseCase: GetCharactersUseCaseImpl
 
     @Before
     fun setup() {
-        targetUseCase = GetCharactersUseCase(repo)
+        targetUseCase = GetCharactersUseCaseImpl(repo)
     }
 
     @Test
