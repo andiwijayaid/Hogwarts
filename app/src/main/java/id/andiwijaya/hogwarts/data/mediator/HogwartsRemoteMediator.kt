@@ -6,6 +6,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import id.andiwijaya.hogwarts.core.Constants.EMPTY_STRING
 import id.andiwijaya.hogwarts.core.Constants.INITIAL_PAGE_INDEX
 import id.andiwijaya.hogwarts.core.Constants.ONE
 import id.andiwijaya.hogwarts.core.Constants.PERCENT
@@ -23,10 +24,11 @@ import javax.inject.Inject
 @OptIn(ExperimentalPagingApi::class)
 class HogwartsRemoteMediator @Inject constructor(
     private val database: HogwartsDatabase,
-    private val remoteDataSource: HogwartsRemoteDataSource,
-    private val keyword: String,
-    private val isSearch: Boolean = false
+    private val remoteDataSource: HogwartsRemoteDataSource
 ) : RemoteMediator<Int, Character>() {
+
+    private var isSearch = false
+    private var keyword = EMPTY_STRING
 
     override suspend fun load(
         loadType: LoadType,
@@ -104,6 +106,11 @@ class HogwartsRemoteMediator @Inject constructor(
                 database.remoteKeysDao().getRemoteKeysId(id)
             }
         }
+    }
+
+    fun setRequest(isSearch: Boolean, keyword: String) {
+        this.isSearch = isSearch
+        this.keyword = keyword
     }
 
 }

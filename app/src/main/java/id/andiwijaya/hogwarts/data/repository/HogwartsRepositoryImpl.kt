@@ -9,7 +9,6 @@ import id.andiwijaya.hogwarts.core.Constants.PERCENT
 import id.andiwijaya.hogwarts.core.util.wrap
 import id.andiwijaya.hogwarts.data.local.HogwartsDatabase
 import id.andiwijaya.hogwarts.data.mediator.HogwartsRemoteMediator
-import id.andiwijaya.hogwarts.data.remote.service.HogwartsRemoteDataSource
 import id.andiwijaya.hogwarts.domain.model.Character
 import id.andiwijaya.hogwarts.domain.repository.HogwartsRepository
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class HogwartsRepositoryImpl @Inject constructor(
     private val hogwartsDatabase: HogwartsDatabase,
-    private val remoteDataSource: HogwartsRemoteDataSource
+    private val hogwartsRemoteMediator: HogwartsRemoteMediator
 ) : HogwartsRepository {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -28,12 +27,7 @@ class HogwartsRepositoryImpl @Inject constructor(
         isSearch: Boolean
     ): Flow<PagingData<Character>> = Pager(
         config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
-        remoteMediator = HogwartsRemoteMediator(
-            hogwartsDatabase,
-            remoteDataSource,
-            keyword,
-            isSearch
-        ),
+        remoteMediator = hogwartsRemoteMediator.also { it.setRequest(isSearch, keyword) },
         pagingSourceFactory = {
             if (isSearch) {
                 hogwartsDatabase.characterDao().getCharactersByName(keyword.wrap(PERCENT))

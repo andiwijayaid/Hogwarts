@@ -5,6 +5,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import id.andiwijaya.hogwarts.core.Constants.Network.BASE_URL
+import id.andiwijaya.hogwarts.data.local.HogwartsDatabase
+import id.andiwijaya.hogwarts.data.mediator.HogwartsRemoteMediator
 import id.andiwijaya.hogwarts.data.remote.PotterDbApi
 import id.andiwijaya.hogwarts.data.remote.service.HogwartsRemoteDataSource
 import retrofit2.Retrofit
@@ -26,5 +28,12 @@ object AppModule {
     @Singleton
     @Provides
     fun provideHogwartsRemoteDataSource(api: PotterDbApi) = HogwartsRemoteDataSource(api)
+
+    @Singleton
+    @Provides
+    fun provideHogwartsRemoteMediator(
+        hogwartsDatabase: HogwartsDatabase,
+        remoteDataSource: HogwartsRemoteDataSource
+    ) = HogwartsRemoteMediator(hogwartsDatabase, remoteDataSource)
 
 }
