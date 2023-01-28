@@ -41,15 +41,15 @@ class GetCharactersUseCaseTest {
 
     @Test
     fun `when invoke getCharacters`() = runTest {
-        val mockResponse: PagingData<Character> = CharacterPagingSource.snapshot(dummyCharacters)
-        whenever(repo.getCharacters(EMPTY_STRING)).thenReturn(flowOf(mockResponse))
+        val expectedResult: PagingData<Character> = CharacterPagingSource.snapshot(dummyCharacters)
+        whenever(repo.getCharacters(EMPTY_STRING)).thenReturn(flowOf(expectedResult))
 
-        var actualData: PagingData<Character> = CharacterPagingSource.snapshot(listOf())
-        targetUseCase(EMPTY_STRING).collect { actualData = it }
+        var result: PagingData<Character> = CharacterPagingSource.snapshot(listOf())
+        targetUseCase(EMPTY_STRING).collect { result = it }
 
         verify(repo).getCharacters(EMPTY_STRING)
         verifyNoMoreInteractions(repo)
-        assertThat(actualData).isEqualTo(mockResponse)
+        assertThat(result).isEqualTo(expectedResult)
     }
 
 }

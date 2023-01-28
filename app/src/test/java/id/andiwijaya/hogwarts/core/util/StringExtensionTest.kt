@@ -27,18 +27,20 @@ class StringExtensionTest {
 
     @Test
     fun `when invoke orHyphen with non blank string should return its value`() {
-        val dummy = faker.app.name()
-        val result = dummy.orHyphen()
-        assertThat(result).isEqualTo(dummy)
+        val expectedResult = faker.app.name()
+        val result = expectedResult.orHyphen()
+        assertThat(result).isEqualTo(expectedResult)
     }
 
     @Test
     fun `when invoke wrap it should return string with wrapper`() {
         val dummy = faker.app.name()
         val wrapper = PERCENT
+        val expectedResult = "$wrapper$dummy$wrapper"
         val result = dummy.wrap(wrapper)
+
         assertThat(result).isNotEqualTo(dummy)
-        assertThat(result).isEqualTo("$wrapper$dummy$wrapper")
+        assertThat(result).isEqualTo(expectedResult)
         assertThat(result[ZERO].toString()).isEqualTo(wrapper)
         assertThat(result[result.length - ONE].toString()).isEqualTo(wrapper)
     }

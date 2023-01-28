@@ -19,24 +19,24 @@ class GetCharactersResponseTest {
     @Test
     fun `toCharacters should map the correct value`() {
         val randomInt = Random.nextInt(0, dummyGetCharactersResponse.characters.size)
-        val characterDto = dummyGetCharactersResponse.characters[randomInt]
-        val character = characters[randomInt]
+        val expectedResult = dummyGetCharactersResponse.characters[randomInt]
+        val result = characters[randomInt]
 
-        assertThat(character.id).isEqualTo(characterDto.id)
-        assertThat(character.bloodStatus).isEqualTo(characterDto.attributes.bloodStatus)
-        assertThat(character.boggart).isEqualTo(characterDto.attributes.boggart)
-        assertThat(character.born).isEqualTo(characterDto.attributes.born)
-        assertThat(character.died).isEqualTo(characterDto.attributes.died)
-        assertThat(character.eyeColor).isEqualTo(characterDto.attributes.eyeColor)
-        assertThat(character.gender).isEqualTo(characterDto.attributes.gender)
-        assertThat(character.hairColor).isEqualTo(characterDto.attributes.hairColor)
-        assertThat(character.house).isEqualTo(characterDto.attributes.house)
-        assertThat(character.image).isEqualTo(characterDto.attributes.image)
-        assertThat(character.maritalStatus).isEqualTo(characterDto.attributes.maritalStatus)
-        assertThat(character.name).isEqualTo(characterDto.attributes.name)
-        assertThat(character.nationality).isEqualTo(characterDto.attributes.nationality)
-        assertThat(character.species).isEqualTo(characterDto.attributes.species)
-        assertThat(character.wiki).isEqualTo(characterDto.attributes.wiki)
+        assertThat(result.id).isEqualTo(expectedResult.id)
+        assertThat(result.bloodStatus).isEqualTo(expectedResult.attributes.bloodStatus)
+        assertThat(result.boggart).isEqualTo(expectedResult.attributes.boggart)
+        assertThat(result.born).isEqualTo(expectedResult.attributes.born)
+        assertThat(result.died).isEqualTo(expectedResult.attributes.died)
+        assertThat(result.eyeColor).isEqualTo(expectedResult.attributes.eyeColor)
+        assertThat(result.gender).isEqualTo(expectedResult.attributes.gender)
+        assertThat(result.hairColor).isEqualTo(expectedResult.attributes.hairColor)
+        assertThat(result.house).isEqualTo(expectedResult.attributes.house)
+        assertThat(result.image).isEqualTo(expectedResult.attributes.image)
+        assertThat(result.maritalStatus).isEqualTo(expectedResult.attributes.maritalStatus)
+        assertThat(result.name).isEqualTo(expectedResult.attributes.name)
+        assertThat(result.nationality).isEqualTo(expectedResult.attributes.nationality)
+        assertThat(result.species).isEqualTo(expectedResult.attributes.species)
+        assertThat(result.wiki).isEqualTo(expectedResult.attributes.wiki)
     }
 
     @Test

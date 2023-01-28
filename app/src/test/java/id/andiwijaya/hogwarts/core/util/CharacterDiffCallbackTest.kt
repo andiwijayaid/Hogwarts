@@ -9,31 +9,31 @@ class CharacterDiffCallbackTest {
 
     @Test
     fun `areItemsTheSame should return true`() {
-        val actualResult = CharacterDiffCallback.areItemsTheSame(dummyCharacter, dummyCharacter)
-        assertThat(actualResult).isTrue()
+        val result = CharacterDiffCallback.areItemsTheSame(dummyCharacter, dummyCharacter)
+        assertThat(result).isTrue()
     }
 
     @Test
     fun `areItemsTheSame should return false`() {
-        val actualResult = CharacterDiffCallback.areItemsTheSame(
+        val result = CharacterDiffCallback.areItemsTheSame(
             dummyCharacter,
             dummyCharacter.copy(id = faker.app.name())
         )
-        assertThat(actualResult).isFalse()
+        assertThat(result).isFalse()
     }
 
     @Test
     fun `areContentsTheSame should return true`() {
-        val actualResult = CharacterDiffCallback.areContentsTheSame(dummyCharacter, dummyCharacter)
-        assertThat(actualResult).isTrue()
+        val result = CharacterDiffCallback.areContentsTheSame(dummyCharacter, dummyCharacter)
+        assertThat(result).isTrue()
     }
 
     @Test
     fun `areContentsTheSame should return false`() {
-        val actualResult = CharacterDiffCallback.areContentsTheSame(
+        val result = CharacterDiffCallback.areContentsTheSame(
             dummyCharacter,
             dummyCharacter.copy(name = faker.app.name())
         )
-        assertThat(actualResult).isFalse()
+        assertThat(result).isFalse()
     }
 }
