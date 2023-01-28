@@ -2,13 +2,17 @@ package id.andiwijaya.hogwarts.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.AsyncPagingDataDiffer
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import id.andiwijaya.hogwarts.core.util.CharacterDiffCallback
 import id.andiwijaya.hogwarts.domain.model.Character
+import id.andiwijaya.hogwarts.domain.model.CharacterListState
 import id.andiwijaya.hogwarts.domain.usecase.GetCharactersUseCase
 import id.andiwijaya.hogwarts.presentation.fragment.CharacterListFragmentArgs
 import id.andiwijaya.hogwarts.util.CharacterPagingSource
@@ -23,6 +27,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import kotlin.random.Random
 
 @ExperimentalCoroutinesApi
 class CharacterListViewModelTest {
@@ -67,6 +72,85 @@ class CharacterListViewModelTest {
         assertThat(differ.snapshot()).isNotNull()
         assertThat(dummyCharacters).isEqualTo(differ.snapshot())
         assertThat(dummyCharacters.size).isEqualTo(differ.snapshot().size)
+    }
+
+    @Test
+    fun `updateListState receive loadState-refresh is LoadState-Loading`() {
+        val loadState = mock<CombinedLoadStates> {
+            on { refresh } doReturn LoadState.Loading
+        }
+
+        targetViewModel.updateListState(loadState, 0)
+
+        val result = targetViewModel.listState.getOrAwaitValue()
+        val expectedResult = CharacterListState.Loading
+
+        assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `updateListState receive loadState-refresh is LoadState-Error`() {
+        val loadState = mock<CombinedLoadStates> {
+            on { refresh } doReturn mock<LoadState.Error>()
+        }
+
+        targetViewModel.updateListState(loadState, 0)
+
+        val result = targetViewModel.listState.getOrAwaitValue()
+        val expectedResult = CharacterListState.Error
+
+        assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `updateListState receive endOfPaginationReached but adapter is zero`() {
+        val mockNotLoading = mock<LoadState.NotLoading> {
+            on { endOfPaginationReached } doReturn true
+        }
+        val loadState = mock<CombinedLoadStates> {
+            on { append } doReturn mockNotLoading
+        }
+
+        targetViewModel.updateListState(loadState, 0)
+
+        val result = targetViewModel.listState.getOrAwaitValue()
+        val expectedResult = CharacterListState.NoDataFound
+
+        assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `updateListState should be success on NotLoading, endOfPaginationReached, and itemCount is not zero`() {
+        val mockNotLoading = mock<LoadState.NotLoading> {
+            on { endOfPaginationReached } doReturn true
+        }
+        val loadState = mock<CombinedLoadStates> {
+            on { append } doReturn mockNotLoading
+        }
+
+        targetViewModel.updateListState(loadState, Random.nextInt(1, 20))
+
+        val result = targetViewModel.listState.getOrAwaitValue()
+        val expectedResult = CharacterListState.Success
+
+        assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `updateListState should be success on NotLoading, not endOfPaginationReached, and itemCount is not zero`() {
+        val mockNotLoading = mock<LoadState.NotLoading> {
+            on { endOfPaginationReached } doReturn false
+        }
+        val loadState = mock<CombinedLoadStates> {
+            on { append } doReturn mockNotLoading
+        }
+
+        targetViewModel.updateListState(loadState, Random.nextInt(1, 20))
+
+        val result = targetViewModel.listState.getOrAwaitValue()
+        val expectedResult = CharacterListState.Success
+
+        assertThat(result).isEqualTo(expectedResult)
     }
 
     @Test

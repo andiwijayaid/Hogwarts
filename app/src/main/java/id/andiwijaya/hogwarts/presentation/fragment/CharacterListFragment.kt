@@ -9,14 +9,13 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.andiwijaya.hogwarts.R
 import id.andiwijaya.hogwarts.core.Constants.ZERO
 import id.andiwijaya.hogwarts.core.base.BaseFragment
 import id.andiwijaya.hogwarts.databinding.FragmentCharacterListBinding
+import id.andiwijaya.hogwarts.domain.model.CharacterListState
 import id.andiwijaya.hogwarts.presentation.adapter.CharacterAdapter
 import id.andiwijaya.hogwarts.presentation.adapter.CharacterLoadStateAdapter
 import id.andiwijaya.hogwarts.presentation.viewmodel.CharacterListViewModel
@@ -62,24 +61,34 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
             }
         )
         rvCharacter.layoutManager = LinearLayoutManager(context)
-        adapter.addLoadStateListener { validateLoadState(it) }
+        observeListState()
+        adapter.addLoadStateListener {
+            viewModel.updateListState(it, adapter.itemCount)
+        }
     }
 
-    private fun validateLoadState(loadStates: CombinedLoadStates) = with(binding) {
-        if (loadStates.refresh is LoadState.Loading && noItem()) {
-            cgError.isVisible = false
-            cgPageState.isVisible = true
-            tvPageState.text = getString(R.string.loading)
-        } else if (loadStates.refresh is LoadState.Error && noItem()) {
-            cgError.isVisible = true
-            cgPageState.isVisible = false
-        } else if (loadStates.append.endOfPaginationReached && noItem()) {
-            cgError.isVisible = false
-            cgPageState.isVisible = true
-            tvPageState.text = getString(R.string.no_data_message)
-        } else {
-            cgError.isVisible = false
-            cgPageState.isVisible = false
+    private fun observeListState() = with(binding) {
+        viewModel.listState.observe(viewLifecycleOwner) {
+            when (it) {
+                CharacterListState.Loading -> {
+                    cgError.isVisible = false
+                    cgPageState.isVisible = true
+                    tvPageState.text = getString(R.string.loading)
+                }
+                CharacterListState.Error -> {
+                    cgError.isVisible = true
+                    cgPageState.isVisible = false
+                }
+                CharacterListState.NoDataFound -> {
+                    cgError.isVisible = false
+                    cgPageState.isVisible = true
+                    tvPageState.text = getString(R.string.no_data_message)
+                }
+                CharacterListState.Success -> {
+                    cgError.isVisible = false
+                    cgPageState.isVisible = false
+                }
+            }
         }
     }
 
@@ -97,12 +106,10 @@ class CharacterListFragment : BaseFragment<FragmentCharacterListBinding>() {
         if (actionId == EditorInfo.IME_ACTION_SEARCH && etSearch.text.isNotBlank()) {
             viewModel.setKeyword(etSearch.text.toString())
         } else if (etSearch.text.isBlank()) {
-            cgPageState.isVisible = etSearch.text.isBlank() && noItem()
+            cgPageState.isVisible = etSearch.text.isBlank() && adapter.itemCount == ZERO
             tvPageState.text = getString(R.string.blank_keyword_message)
         } else tvPageState.text = getString(R.string.loading)
     }
-
-    private fun noItem() = adapter.itemCount == ZERO
 
     private fun setupObserver() = with(viewModel) {
         keyword.observe(viewLifecycleOwner) {
