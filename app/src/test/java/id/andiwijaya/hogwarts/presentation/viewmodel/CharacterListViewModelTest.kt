@@ -1,16 +1,13 @@
 package id.andiwijaya.hogwarts.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.ListUpdateCallback
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import id.andiwijaya.hogwarts.core.util.CharacterDiffCallback
 import id.andiwijaya.hogwarts.domain.model.Character
 import id.andiwijaya.hogwarts.domain.model.CharacterListState
 import id.andiwijaya.hogwarts.domain.usecase.GetCharactersUseCase
@@ -20,7 +17,7 @@ import id.andiwijaya.hogwarts.util.DataDummy.dummyCharacters
 import id.andiwijaya.hogwarts.util.DataDummy.faker
 import id.andiwijaya.hogwarts.util.LiveDataTestUtils.getOrAwaitValue
 import id.andiwijaya.hogwarts.util.MainDispatcherRule
-import kotlinx.coroutines.Dispatchers
+import id.andiwijaya.hogwarts.util.PagingUtil.setupDiffer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -41,13 +38,6 @@ class CharacterListViewModelTest {
     private lateinit var targetViewModel: CharacterListViewModel
     private val getCharactersUseCase = mock<GetCharactersUseCase>()
 
-    private val noopListUpdateCallback = object : ListUpdateCallback {
-        override fun onInserted(position: Int, count: Int) {}
-        override fun onRemoved(position: Int, count: Int) {}
-        override fun onMoved(fromPosition: Int, toPosition: Int) {}
-        override fun onChanged(position: Int, count: Int, payload: Any?) {}
-    }
-
     @Before
     fun setUp() {
         targetViewModel = CharacterListViewModel(getCharactersUseCase)
@@ -62,11 +52,7 @@ class CharacterListViewModelTest {
         targetViewModel.getCharacters(fakeRequest)
         val actualData: PagingData<Character> = targetViewModel.characters.getOrAwaitValue()
 
-        val differ = AsyncPagingDataDiffer(
-            diffCallback = CharacterDiffCallback,
-            updateCallback = noopListUpdateCallback,
-            workerDispatcher = Dispatchers.Main
-        )
+        val differ = setupDiffer()
         differ.submitData(actualData)
 
         assertThat(differ.snapshot()).isNotNull()
