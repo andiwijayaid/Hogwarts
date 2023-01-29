@@ -115,4 +115,22 @@ class HogwartsRemoteMediator @Inject constructor(
 
     @TestOnly
     suspend fun isCharactersNotExistByNameTest(house: String) = isCharactersNotExistByName(house)
+
+    @TestOnly
+    suspend fun getRemoteKeyForLastItemTest(state: PagingState<Int, Character>) =
+        getRemoteKeyForLastItem(state)
+
+    @TestOnly
+    suspend fun getRemoteKeyForFirstItemTest(state: PagingState<Int, Character>) =
+        getRemoteKeyForFirstItem(state)
+
+    @TestOnly
+    suspend fun getRemoteKeyClosestToCurrentPositionTest(state: PagingState<Int, Character>) =
+        getRemoteKeyClosestToCurrentPosition(state)
+
+    @TestOnly
+    fun getIsSearch() = isSearch
+
+    @TestOnly
+    fun getKeyword() = keyword
 }
