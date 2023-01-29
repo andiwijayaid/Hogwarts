@@ -1,6 +1,5 @@
 package id.andiwijaya.hogwarts.data.mediator
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -10,11 +9,10 @@ import id.andiwijaya.hogwarts.core.Constants.EMPTY_STRING
 import id.andiwijaya.hogwarts.core.Constants.INITIAL_PAGE_INDEX
 import id.andiwijaya.hogwarts.core.Constants.ONE
 import id.andiwijaya.hogwarts.core.Constants.ZERO
-import id.andiwijaya.hogwarts.core.Status.ERROR
 import id.andiwijaya.hogwarts.core.util.orTrue
 import id.andiwijaya.hogwarts.data.local.HogwartsDatabase
+import id.andiwijaya.hogwarts.data.remote.PotterDbApi
 import id.andiwijaya.hogwarts.data.remote.dto.response.toCharacters
-import id.andiwijaya.hogwarts.data.remote.service.HogwartsRemoteDataSource
 import id.andiwijaya.hogwarts.domain.model.Character
 import id.andiwijaya.hogwarts.domain.model.RemoteKeys
 import org.jetbrains.annotations.TestOnly
@@ -23,7 +21,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalPagingApi::class)
 class HogwartsRemoteMediator @Inject constructor(
     private val database: HogwartsDatabase,
-    private val remoteDataSource: HogwartsRemoteDataSource
+    private val api: PotterDbApi
 ) : RemoteMediator<Int, Character>() {
 
     private var isSearch = false
@@ -52,25 +50,25 @@ class HogwartsRemoteMediator @Inject constructor(
         }
         return try {
             val response = if (isSearch) {
-                remoteDataSource.getCharactersByName(keyword, page, state.config.pageSize)
-            } else remoteDataSource.getCharacters(keyword, page, state.config.pageSize)
-            val endOfPaginationReached = response.data?.characters?.isEmpty().orTrue()
+                api.getCharactersByName(keyword, page)
+            } else api.getCharacters(keyword, page)
+            val responseBody = response.body()
+            val endOfPaginationReached = responseBody?.characters?.isEmpty().orTrue()
             database.withTransaction {
                 val isError = setOf(
-                    response.status == ERROR,
+                    response.isSuccessful.not(),
                     isCharactersNotExistByName(keyword).takeIf { isSearch }
                         ?: isCharactersNotExistByHouse(keyword)
                 ).contains(false).not()
-                Log.d("ASDCV", "${response.status == ERROR}, $isError")
                 if (isError) MediatorResult.Error(Exception("Error")) else {
                     val prevKey = if (page == ONE) null else page - ONE
                     val nextKey = if (endOfPaginationReached) null else page + ONE
-                    val keys = response.data?.characters?.map {
+                    val keys = responseBody?.characters?.map {
                         RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                     }
                     database.remoteKeysDao().insertAll(keys.orEmpty())
                     database.characterDao()
-                        .insertCharacters(response.data?.toCharacters().orEmpty())
+                        .insertCharacters(responseBody?.toCharacters().orEmpty())
                     MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
                 }
             }
@@ -117,5 +115,4 @@ class HogwartsRemoteMediator @Inject constructor(
 
     @TestOnly
     suspend fun isCharactersNotExistByNameTest(house: String) = isCharactersNotExistByName(house)
-
 }
