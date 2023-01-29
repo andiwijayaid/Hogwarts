@@ -9,16 +9,15 @@ import androidx.room.withTransaction
 import id.andiwijaya.hogwarts.core.Constants.EMPTY_STRING
 import id.andiwijaya.hogwarts.core.Constants.INITIAL_PAGE_INDEX
 import id.andiwijaya.hogwarts.core.Constants.ONE
-import id.andiwijaya.hogwarts.core.Constants.PERCENT
 import id.andiwijaya.hogwarts.core.Constants.ZERO
 import id.andiwijaya.hogwarts.core.Status.ERROR
 import id.andiwijaya.hogwarts.core.util.orTrue
-import id.andiwijaya.hogwarts.core.util.wrap
 import id.andiwijaya.hogwarts.data.local.HogwartsDatabase
 import id.andiwijaya.hogwarts.data.remote.dto.response.toCharacters
 import id.andiwijaya.hogwarts.data.remote.service.HogwartsRemoteDataSource
 import id.andiwijaya.hogwarts.domain.model.Character
 import id.andiwijaya.hogwarts.domain.model.RemoteKeys
+import org.jetbrains.annotations.TestOnly
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -81,7 +80,7 @@ class HogwartsRemoteMediator @Inject constructor(
     }
 
     private suspend fun isCharactersNotExistByHouse(house: String) =
-        database.characterDao().getNumberOfCharactersByHouse(house.wrap(PERCENT)) == ZERO
+        database.characterDao().getNumberOfCharactersByHouse(house) == ZERO
 
     private suspend fun isCharactersNotExistByName(name: String) =
         database.characterDao().getNumberOfCharactersByName(name) == ZERO
@@ -112,5 +111,11 @@ class HogwartsRemoteMediator @Inject constructor(
         this.isSearch = isSearch
         this.keyword = keyword
     }
+
+    @TestOnly
+    suspend fun isCharactersNotExistByHouseTest(house: String) = isCharactersNotExistByHouse(house)
+
+    @TestOnly
+    suspend fun isCharactersNotExistByNameTest(house: String) = isCharactersNotExistByName(house)
 
 }

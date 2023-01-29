@@ -27,7 +27,9 @@ class HogwartsRepositoryImpl @Inject constructor(
         isSearch: Boolean
     ): Flow<PagingData<Character>> = Pager(
         config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
-        remoteMediator = hogwartsRemoteMediator.also { it.setRequest(isSearch, keyword) },
+        remoteMediator = hogwartsRemoteMediator.also {
+            it.setRequest(isSearch, keyword.wrap(PERCENT).takeIf { isSearch } ?: keyword)
+        },
         pagingSourceFactory = {
             if (isSearch) {
                 hogwartsDatabase.characterDao().getCharactersByName(keyword.wrap(PERCENT))
