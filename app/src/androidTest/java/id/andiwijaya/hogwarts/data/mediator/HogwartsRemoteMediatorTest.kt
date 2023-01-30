@@ -13,6 +13,7 @@ import id.andiwijaya.hogwarts.util.DataDummy.dummyGetCharactersResponse
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -77,8 +78,19 @@ class HogwartsRemoteMediatorTest {
     }
 
     @Test
-    fun getCharactersReturnsErrorResultWhenErrorOccurs() = runBlocking {
+    fun getCharactersReturnsErrorResultWhenIOExceptionOccurs() = runBlocking {
         coEvery { mockApi.getCharacters(GRYFFINDOR, 1) } throws IOException()
+
+        remoteMediator.setRequest(false, GRYFFINDOR)
+
+        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
+        assertTrue { result is RemoteMediator.MediatorResult.Error }
+    }
+
+    @Test
+    fun getCharactersReturnsErrorResultWhenErrorOccurs() = runBlocking {
+        val response = Response.error<GetCharactersResponse>(500, "".toResponseBody())
+        coEvery { mockApi.getCharacters(GRYFFINDOR, 1) } returns response
 
         remoteMediator.setRequest(false, GRYFFINDOR)
 
@@ -111,8 +123,19 @@ class HogwartsRemoteMediatorTest {
     }
 
     @Test
-    fun getCharactersByNameReturnsErrorResultWhenErrorOccurs() = runBlocking {
+    fun getCharactersByNameReturnsErrorResultWhenIOExceptionOccurs() = runBlocking {
         coEvery { mockApi.getCharactersByName(GRYFFINDOR, 1) } throws IOException()
+
+        remoteMediator.setRequest(true, GRYFFINDOR)
+
+        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
+        assertTrue { result is RemoteMediator.MediatorResult.Error }
+    }
+
+    @Test
+    fun getCharactersByNameReturnsErrorResultWhenErrorOccurs() = runBlocking {
+        val response = Response.error<GetCharactersResponse>(500, "".toResponseBody())
+        coEvery { mockApi.getCharactersByName(GRYFFINDOR, 1) } returns response
 
         remoteMediator.setRequest(true, GRYFFINDOR)
 
