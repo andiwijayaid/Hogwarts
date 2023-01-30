@@ -13,4 +13,7 @@ interface RemoteKeysDao {
 
     @Query("SELECT * FROM remote_keys WHERE id = :id")
     suspend fun getRemoteKeysId(id: String): RemoteKeys?
+
+    @Query("SELECT COUNT(*) FROM remote_keys")
+    suspend fun getNumberOfRecord(): Int
 }

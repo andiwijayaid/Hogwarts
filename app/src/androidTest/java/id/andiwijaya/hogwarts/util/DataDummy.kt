@@ -3,11 +3,46 @@ package id.andiwijaya.hogwarts.util
 import id.andiwijaya.hogwarts.data.remote.dto.model.AttributesDto
 import id.andiwijaya.hogwarts.data.remote.dto.model.CharacterDto
 import id.andiwijaya.hogwarts.data.remote.dto.response.GetCharactersResponse
+import id.andiwijaya.hogwarts.domain.model.Character
+import id.andiwijaya.hogwarts.domain.model.RemoteKeys
 import io.github.serpro69.kfaker.Faker
+import kotlin.random.Random
 
 object DataDummy {
 
-    private val faker = Faker()
+    val faker = Faker()
+
+    fun dummyCharacter() = Character(
+        id = faker.app.version(),
+        bloodStatus = faker.app.version(),
+        boggart = faker.app.version(),
+        born = faker.app.version(),
+        died = faker.app.version(),
+        eyeColor = faker.app.version(),
+        gender = faker.app.version(),
+        hairColor = faker.app.version(),
+        house = faker.app.version(),
+        image = faker.app.version(),
+        maritalStatus = faker.app.version(),
+        name = faker.app.version(),
+        nationality = faker.app.version(),
+        species = faker.app.version(),
+        wiki = faker.app.version()
+    )
+
+    val dummyCharacters = arrayListOf<Character>().apply {
+        for (i in 0..10) {
+            add(dummyCharacter())
+        }
+    }
+
+    fun dummyRemoteKey() = RemoteKeys(faker.app.version(), Random.nextInt(), Random.nextInt())
+
+    val dummyRemoteKeys = arrayListOf<RemoteKeys>().apply {
+        for (i in 0..10) {
+            add(dummyRemoteKey())
+        }
+    }
 
     private val dummyListOfString = arrayListOf<String>().apply {
         for (i in 0..10) {

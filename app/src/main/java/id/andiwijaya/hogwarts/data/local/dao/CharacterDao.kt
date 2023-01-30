@@ -23,4 +23,7 @@ interface CharacterDao {
 
     @Query("SELECT COUNT(*) FROM character WHERE house is :houseName")
     suspend fun getNumberOfCharactersByHouse(houseName: String): Int
+
+    @Query("SELECT COUNT(*) FROM character")
+    suspend fun getNumberOfRecord(): Int
 }
