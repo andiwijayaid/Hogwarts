@@ -55,7 +55,7 @@ class HogwartsRemoteMediatorTest {
     @Test
     fun `isCharactersNotExistByHouse should return false when there is record(s)`() = runTest {
         whenever(mockDatabase.characterDao().getNumberOfCharactersByHouse(""))
-            .thenReturn(Random.nextInt(0, 10))
+            .thenReturn(Random.nextInt(1, 10))
         val result = remoteMediator.isCharactersNotExistByHouseTest("")
         assertThat(result).isFalse()
     }
@@ -70,7 +70,7 @@ class HogwartsRemoteMediatorTest {
     @Test
     fun `isCharactersNotExistByName should return false when there is record(s)`() = runTest {
         whenever(mockDatabase.characterDao().getNumberOfCharactersByName(""))
-            .thenReturn(Random.nextInt(0, 10))
+            .thenReturn(Random.nextInt(1, 10))
         val result = remoteMediator.isCharactersNotExistByNameTest("")
         assertThat(result).isFalse()
     }
